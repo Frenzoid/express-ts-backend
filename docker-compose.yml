@@ -1,0 +1,31 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8000:8080
+    depends_on:
+      - database
+
+  server:
+    build: ./
+    volumes: 
+      - ./:/usr/src/app
+
+    ports:
+      - 8001:3005
+    env_file:
+      - env
+    depends_on:
+      - database
+    restart: on-failure

@@ -1,0 +1,15 @@
+{
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "compilerOptions": {
+        "outDir": "dist",
+        "sourceMap": true,
+        "module": "commonjs",
+        "target": "ES2015"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
