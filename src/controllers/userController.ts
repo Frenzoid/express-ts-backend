@@ -4,6 +4,7 @@ import { USERAVATAR } from '../config/const';
 import { Request, Response } from 'express';
 import { TokenManagement } from '../utils/tokenManager';
 import { UploadedFile } from 'express-fileupload';
+import { FileManager } from '../utils/fileManager';
 
 import * as mkdir from 'mkdirp';
 import * as bcrypt from 'bcrypt-nodejs';
@@ -82,30 +83,17 @@ class UserController {
         Rp.errors.push(error);
       } else {
         // Checks if there was a file for the avatar image, and uploads it.
-        let uploadFailed = false;
-        if (req.files.avatar && (req.files.avatar as UploadedFile).mimetype.startsWith('image/')){
-
+        const expressFile = (req.files.avatar as UploadedFile);
+        if (expressFile && FileManager.checkMimetype(expressFile, 'image/')) {
           const userMediaPath: string = `${USERAVATAR}/${newUser.id}/`;
-          const userMediaPathComplete: string = userMediaPath + (req.files.avatar as UploadedFile).name;
-
-          mkdir(userMediaPath, (errMkdir) => {
-            if (errMkdir) {
-              console.error(`Error creating folder for the user's avatar: ${errMkdir}`);
-              uploadFailed = true;
-            } else {
-              (req.files.avatar as UploadedFile).mv(userMediaPathComplete, (errMoving: string) => {
-                if (errMoving) {
-                  console.error(`Error moving file: ${errMoving}`);
-                  uploadFailed = true;
-                } else
-                  newUser.avatar = userMediaPathComplete;
-              });
-            }
-          });
+          FileManager.manageFile(expressFile, userMediaPath)
+          .then((serverPath: string) => {
+            delete newUser.password;
+            newUser.avatar = serverPath;
+            Rp.data = newUser;
+          })
+          .catch(err => console.log(err));
         }
-
-        delete newUser.password;
-        Rp.data = newUser;
       }
     }).catch((err: string) => {
       const error = `Error find user: ${err}`;
