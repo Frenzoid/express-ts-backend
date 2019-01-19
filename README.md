@@ -1,5 +1,7 @@
 JWT Implemented. 
-Sequelize Implemented. 
+Typeorm Implemented.
+Express status Implemented.
+File Manger Implemented.
 Postgres Implemented. 
 Docker Implemented. 
 Auth models and controller Implemented. 
