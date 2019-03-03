@@ -1,5 +1,5 @@
 - JWT Implemented. 
-- Typeorm Implemented.
+- Sequelize Implemented.
 - Express status Implemented.
 - File Manger Implemented.
 - Postgres Implemented. 
