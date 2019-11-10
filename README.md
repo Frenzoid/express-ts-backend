@@ -1,5 +1,5 @@
 - JWT Implemented. 
-- Sequelize Implemented.
+- Sequelize Implemented. (TODO Change Sequelize with TypeORM)
 - Express status Implemented.
 - File Manger Implemented.
 - Postgres Implemented. 
