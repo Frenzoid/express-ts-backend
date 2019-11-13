@@ -10,164 +10,51 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("../config/response");
 const user_1 = require("../models/user");
-const const_1 = require("../config/const");
-const tokenManager_1 = require("../utils/tokenManager");
-const mkdir = require("mkdirp");
-const bcrypt = require("bcrypt-nodejs");
+const dbcon_1 = require("../config/dbcon");
 class UserController {
     // Get all Users
     getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            response_1.Response.data = yield user_1.User.findAll({
-                attributes: {
-                    exclude: ['password'],
-                },
-            }).catch((err) => {
-                const error = `Error find user: ${err}`;
-                console.error(error);
-                response_1.Response.errors.push(error);
-            });
-            return response_1.Response.export();
+            const users = yield dbcon_1.DbConnector.connection.manager.find(user_1.User).catch(err => { throw err; });
+            response_1.response.data = users;
+            return response_1.response.export();
         });
     }
-    // Get current logged user.
-    getCurrentUser() {
+    // Get an User
+    getUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (tokenManager_1.TokenManagement.currentUser.id) {
-                response_1.Response.data = tokenManager_1.TokenManagement.currentUser;
-            }
-            else {
-                const err = 'User not synced or not found.';
-                console.error(err);
-                response_1.Response.errors.push(err);
-            }
-            return response_1.Response.export();
-        });
-    }
-    // Get a User
-    getUser(idUser) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield user_1.User.findByPk(idUser, { attributes: {
-                    exclude: ['password'],
-                } })
-                .then((user) => {
-                if (user) {
-                    response_1.Response.data = user;
-                }
-                else {
-                    const err = 'User not found';
-                    console.error(err);
-                    response_1.Response.errors.push(err);
-                }
-            })
-                .catch((err) => {
-                const error = `Error finding user: ${err}`;
-                console.error(error);
-                response_1.Response.errors.push(error);
-            });
-            return response_1.Response.export();
+            const searchOptions = { IdUser: req.params.id };
+            const user = yield dbcon_1.DbConnector.connection.manager.find(user_1.User, searchOptions).catch(err => { throw err; });
+            response_1.response.data = user;
+            return response_1.response.export();
         });
     }
     // Create a new user.
-    newUser(req) {
+    postUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = req.body.user;
-            // Encripts password.
-            user.password = bcrypt.hashSync(user.password);
-            yield user_1.User.create(user).then((newUser) => {
-                if (!newUser) {
-                    const error = 'Error creating user, user empty';
-                    console.error(error);
-                    response_1.Response.errors.push(error);
-                }
-                else {
-                    // Checks if there was a file for the avatar image, and uploads it.
-                    let uploadFailed = false;
-                    if (req.files.avatar && req.files.avatar.mimetype.startsWith('image/')) {
-                        const userMediaPath = `${const_1.USERAVATAR}/${newUser.id}/`;
-                        const userMediaPathComplete = userMediaPath + req.files.avatar.name;
-                        mkdir(userMediaPath, (errMkdir) => {
-                            if (errMkdir) {
-                                console.error(`Error creating folder for the user's avatar: ${errMkdir}`);
-                                uploadFailed = true;
-                            }
-                            else {
-                                req.files.avatar.mv(userMediaPathComplete, (errMoving) => {
-                                    if (errMoving) {
-                                        console.error(`Error moving file: ${errMoving}`);
-                                        uploadFailed = true;
-                                    }
-                                    else
-                                        newUser.avatar = userMediaPathComplete;
-                                });
-                            }
-                        });
-                    }
-                    delete newUser.password;
-                    response_1.Response.data = newUser;
-                }
-            }).catch((err) => {
-                const error = `Error find user: ${err}`;
-                console.error(error);
-                response_1.Response.errors.push(error);
-            });
-            return response_1.Response;
+            const user = new user_1.User(req.body.user);
+            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch(err => { throw err; });
+            return response_1.response.export();
         });
     }
-    // Update a user
-    putUser(idUser, user) {
+    // Edit an user.
+    putUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userdb = yield user_1.User.findById(idUser);
-            if (!userdb || !user) {
-                const err = 'Not found user or not found user in body';
-                console.error(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }
-            if (user.password) {
-                user.password = bcrypt.hashSync(user.password);
-            }
-            yield userdb.updateAttributes(user).then(() => __awaiter(this, void 0, void 0, function* () {
-                yield user_1.User.findOne({ where: { id: idUser } }).then((updatedUser) => {
-                    delete updatedUser.password;
-                    response_1.Response.data = updatedUser;
-                }).catch((err) => {
-                    const error = `Error update user: ${err}`;
-                    console.error(error);
-                    response_1.Response.errors.push(error);
-                });
-                return response_1.Response.export();
-            }));
-        });
-    }
-    // Update current logged user.
-    updateCurrentUser(user) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const id = tokenManager_1.TokenManagement.currentUser.id;
-            return yield this.putUser(id, user);
+            const searchOptions = { IdUser: req.params.id };
+            let user = yield dbcon_1.DbConnector.connection.manager.findOne(user_1.User, searchOptions).catch(err => { throw err; });
+            user.update(req.body.user);
+            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch(err => { throw err; });
+            return response_1.response.export();
         });
     }
     // Suspend user.
-    delUser(idUser) {
+    delUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userdb = yield user_1.User.findById(idUser);
-            if (!userdb) {
-                const err = 'User to suspend not found.';
-                console.error(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }
-            yield userdb.updateAttributes({ suspended: true }).then(() => __awaiter(this, void 0, void 0, function* () {
-                yield user_1.User.findOne({ where: { id: idUser } }).then((updatedUser) => {
-                    delete updatedUser.password;
-                    response_1.Response.data = updatedUser;
-                });
-            })).catch((err) => {
-                const error = `User to delete not found: ${err}`;
-                console.error(error);
-                response_1.Response.errors.push(err);
-            });
-            return response_1.Response.export();
+            const searchOptions = { IdUser: req.params.id };
+            let user = yield dbcon_1.DbConnector.connection.manager.findOne(user_1.User, searchOptions).catch(err => { throw err; });
+            user.suspend();
+            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch(err => { throw err; });
+            return response_1.response.export();
         });
     }
 }

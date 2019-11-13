@@ -18,74 +18,69 @@ class UsersRouter {
     }
     getAllUsers(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            res.json(yield userController_1.userController.getUsers().catch((err) => {
+            try {
+                res.json(yield userController_1.userController.getUsers());
+            }
+            catch (err) {
                 console.log(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }));
+                response_1.response.errors.push(err);
+                return response_1.response.export();
+            }
         });
     }
     postUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            res.json(yield userController_1.userController.newUser(req).catch((err) => {
+            try {
+                res.json(yield userController_1.userController.postUser(req));
+            }
+            catch (err) {
                 console.log(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }));
-        });
-    }
-    getUser(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            res.json(yield userController_1.userController.getUser(req.params.id).catch((err) => {
-                console.log(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }));
-        });
-    }
-    getCurrentUser(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            res.json(yield userController_1.userController.getCurrentUser().catch((err) => {
-                console.log(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }));
-        });
-    }
-    putCurrentUser(req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            res.json(yield userController_1.userController.updateCurrentUser(req.body.user).catch((err) => {
-                console.log(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }));
+                response_1.response.errors.push(err);
+                return response_1.response.export();
+            }
         });
     }
     putUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            res.json(yield userController_1.userController.putUser(req.params.id, req.body.user).catch((err) => {
+            try {
+                res.json(yield userController_1.userController.putUser(req));
+            }
+            catch (err) {
                 console.log(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }));
+                response_1.response.errors.push(err);
+                return response_1.response.export();
+            }
+        });
+    }
+    getUser(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                res.json(yield userController_1.userController.getUser(req));
+            }
+            catch (err) {
+                console.log(err);
+                response_1.response.errors.push(err);
+                return response_1.response.export();
+            }
         });
     }
     delUSer(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            res.json(yield userController_1.userController.delUser(req.params.id).catch((err) => {
+            try {
+                res.json(yield userController_1.userController.delUser(req));
+            }
+            catch (err) {
                 console.log(err);
-                response_1.Response.errors.push(err);
-                return response_1.Response.export();
-            }));
+                response_1.response.errors.push(err);
+                return response_1.response.export();
+            }
         });
     }
     init() {
         this.router.get('/', this.getAllUsers);
-        this.router.get('/:id', this.getUser);
-        this.router.get('/mine', this.getCurrentUser);
         this.router.post('/', this.postUser);
-        this.router.patch('/', this.putCurrentUser);
-        this.router.patch('/:id', this.putUser);
+        this.router.get('/:id', this.getUser);
+        this.router.put('/:id', this.putUser);
         this.router.delete('/:id', this.delUSer);
     }
 }
