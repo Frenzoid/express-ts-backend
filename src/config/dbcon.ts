@@ -1,6 +1,6 @@
-import "reflect-metadata";
-import { Connection, ConnectionManager, getConnectionManager } from "typeorm";
-import { User } from "../models/User";
+import 'reflect-metadata';
+import { Connection, ConnectionManager, getConnectionManager } from 'typeorm';
+import { User } from '../models/user';
 
 export class DbConnector {
   public static dbName: string = process.env.DBNAME;
@@ -11,7 +11,7 @@ export class DbConnector {
 
   public static connectionManager: ConnectionManager = getConnectionManager();
   public static connection: Connection = DbConnector.connectionManager.create({
-    type: "postgres",
+    type: 'postgres',
     port: Number(DbConnector.dbport),
     host: DbConnector.dbHost,
     username: DbConnector.dbUser,

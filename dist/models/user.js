@@ -1,107 +1,50 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Sequelize = require("sequelize");
-const database_config_1 = require("../config/database_config");
-// tslint:disable-next-line:variable-name
-exports.User = database_config_1.Config.sConnector.define('users', {
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            len: {
-                args: [3, 25],
-                msg: 'Name must be between 3 and 25 characters in length',
-            },
-        },
-    },
-    lastName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            len: {
-                args: [3, 25],
-                msg: 'Last name must be between 3 and 25 characters in length',
-            },
-        },
-    },
-    nick: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            len: {
-                args: [4, 25],
-                msg: 'Nickname must be between 4 and 25 characters in length',
-            },
-        },
-    },
-    email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: {
-                msg: 'Email address must be valid',
-            },
-        },
-    },
-    createdAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-    },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            length: {
-                args: 5,
-                msg: 'Password must be atleast 5 characters in length',
-            },
-        },
-    },
-    role: {
-        type: Sequelize.ENUM('ROLE_USER', 'ROLE_MODERATOR', 'ROLE_ADMIN'),
-        allowNull: false,
-        defaultValue: 'ROLE_USER',
-    },
-    phone: {
-        type: Sequelize.STRING,
-        defaultValue: '000000000',
-        allowNull: false,
-        validate: {
-            length: {
-                args: [7, 20],
-                msg: 'Phone number must be between 7 and 20 numbers in length',
-            },
-        },
-    },
-    avatar: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        defaultValue: 'default.png',
-    },
-    suspended: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-    },
-}, {
-    tableName: 'user',
-    createdAt: false,
-    updatedAt: false,
-    defaultScope: {
-        where: {
-            active: true,
-        },
-        attributes: { exclude: ['password'] },
-    },
-    scopes: {
-        withoutPassword: {
-            attributes: { exclude: ['password'] },
-        },
-    },
-});
+const typeorm_1 = require("typeorm");
+let User = class User {
+    constructor(userdata) {
+        this.nickname = userdata.nickname;
+        this.name = userdata.name;
+        this.deleted = false;
+    }
+    update(userdata) {
+        if (userdata.nickname)
+            this.nickname = userdata.nickname;
+        if (userdata.name)
+            this.name = userdata.name;
+    }
+    suspend() {
+        this.deleted = true;
+    }
+};
+__decorate([
+    typeorm_1.PrimaryColumn(),
+    __metadata("design:type", String)
+], User.prototype, "IdUser", void 0);
+__decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], User.prototype, "nickname", void 0);
+__decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], User.prototype, "name", void 0);
+__decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", Boolean)
+], User.prototype, "deleted", void 0);
+User = __decorate([
+    typeorm_1.Entity(),
+    __metadata("design:paramtypes", [Object])
+], User);
+exports.User = User;
 //# sourceMappingURL=user.js.map
