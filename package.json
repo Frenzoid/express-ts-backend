@@ -1,6 +1,6 @@
 {
   "name": "express-typescript-docker-jwt-typeorm-template",
-  "version": "1.0.0",
+  "version": "2.3.0",
   "description": "An express template with jwt and sequelize, in typescript",
   "author": {
     "name": "Frenzoid",
