@@ -9,6 +9,7 @@ import * as path from 'path';
 
 // Import configs.
 import { DbConnector } from './config/dbcon';
+import { fileuploadOptions } from './config/fileuploadOptions';
 
 // Imports the routers.
 import userRouter from './routes/userRouter';
@@ -24,30 +25,25 @@ class App {
 
     // Connect with the server
     DbConnector.connection.connect().then((result: any) => {
-      DbConnector.connection.synchronize(true);                               // Force tables to recreate (whipe out) on load.
-      console.log("DB connectionected.");
-    }).catch((err) => {
+
+      DbConnector.connection.synchronize(true).catch((err: string) => {
+        console.error(`but interaction with the db failed. Error: ${err}`);
+      });                                                                     // Force tables to recreate (clear out) on load.
+      if (result.isConnected) console.log('DB: Connection with database established!.');
+
+    }).catch((err: string) => {
       console.error(`Error syncing database: ${err}`);
     });
 
-    // initializating the libraries and the express config.
+    // Initializating the libraries and the express config.
     this.app.use(cors());                                                     // Allows Control Acess Protol to work outside of a localhost.
     this.app.use(compression());                                              // Compresses the requests.
-    this.app.use(logger('dev'));                                              // Logs the activity to the console. (It can be configured to write it to a file).
+    this.app.use(logger('dev'));                                              // Logs the activity to the console.
     this.app.use(bodyParser.json({ limit: '100mb' }));                        // Parses automaticallythe requests, and adds a limit.
     this.app.use(bodyParser.urlencoded({ extended: false, limit: '100mb' })); // Manages the encoded urls, and adds a limit.
-    this.app.use(express_fileupload(
-      {
-        debug: true,
-        abortOnLimit: true,
-        preserveExtension: true,
-        useTempFiles: true,
-        tempFileDir: './tmp/'
-      },
-    ));                                                                        // Manages the file uploads and adds a limit.
+    this.app.use(express_fileupload(fileuploadOptions));                      // Manages the file uploads and adds a limit.
     this.app.use('/api/v1/static', express.static(path.join(__dirname, '/public'))); // Exposes a static folder to the exterior.
     this.app.use(favicon(`${__dirname}/public/coffe.png`));
-
 
     // Routers
     this.app.use('/api/v1/users', userRouter);

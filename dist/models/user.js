@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 let User = class User {
     constructor(userdata) {
-        this.nickname = userdata.nickname;
-        this.name = userdata.name;
-        this.deleted = false;
+        if (userdata) {
+            this.nickname = userdata.nickname;
+            this.name = userdata.name;
+            this.deleted = false;
+        }
     }
     update(userdata) {
         if (userdata.nickname)

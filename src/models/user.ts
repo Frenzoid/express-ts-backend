@@ -3,9 +3,11 @@ import { Entity, PrimaryColumn, Column } from "typeorm";
 @Entity()
 export class User {
   constructor(userdata) {
-    this.nickname = userdata.nickname;
-    this.name = userdata.name;
-    this.deleted = false;
+    if (userdata) {
+      this.nickname = userdata.nickname;
+      this.name = userdata.name;
+      this.deleted = false;
+    }
   }
 
   update(userdata) {
