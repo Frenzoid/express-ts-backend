@@ -23,7 +23,7 @@ services:
       - ./:/usr/src/app
 
     ports:
-      - 8001:3005
+      - 8001:8001
     env_file:
       - env
     depends_on:
