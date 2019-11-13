@@ -15,7 +15,7 @@ class UserController {
     // Get all Users
     getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            const users = yield dbcon_1.DbConnector.connection.manager.find(user_1.User).catch(err => { throw err; });
+            const users = yield dbcon_1.DbConnector.connection.manager.find(user_1.User).catch((err) => { throw err; });
             response_1.response.data = users;
             return response_1.response.export();
         });
@@ -24,7 +24,7 @@ class UserController {
     getUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
             const searchOptions = { IdUser: req.params.id };
-            const user = yield dbcon_1.DbConnector.connection.manager.find(user_1.User, searchOptions).catch(err => { throw err; });
+            const user = yield dbcon_1.DbConnector.connection.manager.find(user_1.User, searchOptions).catch((err) => { throw err; });
             response_1.response.data = user;
             return response_1.response.export();
         });
@@ -33,7 +33,7 @@ class UserController {
     postUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = new user_1.User(req.body.user);
-            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch(err => { throw err; });
+            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch((err) => { throw err; });
             return response_1.response.export();
         });
     }
@@ -41,9 +41,9 @@ class UserController {
     putUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
             const searchOptions = { IdUser: req.params.id };
-            let user = yield dbcon_1.DbConnector.connection.manager.findOne(user_1.User, searchOptions).catch(err => { throw err; });
+            const user = yield dbcon_1.DbConnector.connection.manager.findOne(user_1.User, searchOptions).catch((err) => { throw err; });
             user.update(req.body.user);
-            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch(err => { throw err; });
+            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch((err) => { throw err; });
             return response_1.response.export();
         });
     }
@@ -51,9 +51,9 @@ class UserController {
     delUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
             const searchOptions = { IdUser: req.params.id };
-            let user = yield dbcon_1.DbConnector.connection.manager.findOne(user_1.User, searchOptions).catch(err => { throw err; });
+            const user = yield dbcon_1.DbConnector.connection.manager.findOne(user_1.User, searchOptions).catch((err) => { throw err; });
             user.suspend();
-            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch(err => { throw err; });
+            response_1.response.data = yield dbcon_1.DbConnector.connection.manager.save(user).catch((err) => { throw err; });
             return response_1.response.export();
         });
     }
