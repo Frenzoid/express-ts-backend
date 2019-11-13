@@ -1,15 +1,16 @@
 {
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+  "noUnusedLocals": true,
+  "noUnusedParameters": true,
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true,
+  "experimentalDecoratos": true,
+  "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "compilerOptions": {
-        "outDir": "dist",
-        "sourceMap": true,
-        "module": "commonjs",
-        "target": "ES2015"
-    },
-    "include": [
-        "src/**/*"
-    ]
+    "outDir": "dist",
+    "sourceMap": true,
+    "module": "commonjs",
+    "target": "ES6"
+  },
+  "include": ["src/**/**/*"]
 }

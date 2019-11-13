@@ -1,13 +1,11 @@
-export class Response {
-  public static data?: any;
-  public static errors?: string[];
+class Response {
+  public data?: any;
+  public errors?: string[];
 
-  public static clearData(){
-    Response.data = {};
-    Response.errors = [];
-  }
 
-  public static export(){
-    return { data: Response.data, errors: Response.errors };
+  public export() {
+    return { data: this.data, errors: this.errors };
   }
 }
+
+export const response = new Response();
