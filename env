@@ -1,0 +1,10 @@
+PORT=8001
+APPNAME="express template app"
+LOGGERPATH="./log/access.log"
+DBPASSWORD=example
+DBNAME=db
+DBHOST=database
+DBUSER=postgres
+DBPORT=5432
+JWTSECRET=secreet
+TZ=Europe/Madrid
