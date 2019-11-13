@@ -7,6 +7,9 @@
 - Dev: `npm run dev`.
 - Prod: `npm run prod`
 
+## How to check lints manually.
+- `npm run tslint`.
+
 ## Extra things:
 - JWT Implemented. 
 - TYPEORM.
