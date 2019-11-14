@@ -15,7 +15,7 @@ class UserController {
     getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             const searchOptions = { deleted: false };
-            return yield dbcon_1.DbConnector.connection.manager.find(user_1.User, searchOptions).catch((err) => { throw err; });
+            return yield dbcon_1.DbConnector.connection.manager.find(user_1.User, searchOptions);
         });
     }
     // Get all Users
@@ -27,8 +27,8 @@ class UserController {
     // Get an User
     getUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
-            const searchOptions = { IdUser: req.params.id };
-            return yield dbcon_1.DbConnector.connection.manager.find(user_1.User, searchOptions).catch((err) => { throw err; });
+            const searchOptions = (typeof req === 'number') ? { IdUser: req } : { IdUser: req.params.id };
+            return yield dbcon_1.DbConnector.connection.manager.findOne(user_1.User, searchOptions).catch((err) => { throw err; });
         });
     }
     // Create a new user.

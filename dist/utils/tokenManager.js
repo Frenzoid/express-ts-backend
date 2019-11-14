@@ -29,9 +29,11 @@ class TokenManagement {
         return __awaiter(this, void 0, void 0, function* () {
             this.currentUser = yield userController_1.userController
                 .getUser(id)
-                .catch(err => console.error(err));
-            if (this.currentUser.error)
+                .catch((err) => {
                 console.error('Error Syncing user with API at TokenManager');
+                console.error(err);
+                throw err;
+            });
             this.currentUser = this.currentUser.data;
         });
     }

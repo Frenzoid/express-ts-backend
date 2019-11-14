@@ -6,10 +6,14 @@ import * as favicon from 'express-favicon';
 import * as express_fileupload from 'express-fileupload';
 import * as logger from 'morgan';
 import * as path from 'path';
+import * as passport from 'passport';
 
 // Import configs.
 import { DbConnector } from './config/dbcon';
 import { fileuploadOptions } from './config/fileuploadOptions';
+import { TokenManagement } from './utils/tokenManager';
+import { whitelist } from './config/const';
+import { ResponseModel as RM } from './config/response';
 
 // Imports the routers.
 import userRouter from './routes/userRouter';
@@ -25,12 +29,10 @@ class App {
 
     // Connect with the server
     DbConnector.connection.connect().then((result: any) => {
-
+      if (result.isConnected) console.log('DB: Connection with database established!.');
       DbConnector.connection.synchronize(true).catch((err: string) => {
         console.error(`but interaction with the db failed. Error: ${err}`);
       });                                                                     // Force tables to recreate (clear out) on load.
-      if (result.isConnected) console.log('DB: Connection with database established!.');
-
     }).catch((err: string) => {
       console.error(`Error syncing database: ${err}`);
     });
@@ -44,6 +46,37 @@ class App {
     this.app.use(express_fileupload(fileuploadOptions));                      // Manages the file uploads and adds a limit.
     this.app.use('/api/v1/static', express.static(path.join(__dirname, '/public'))); // Exposes a static folder to the exterior.
     this.app.use(favicon(`${__dirname}/public/coffe.png`));
+    passport.use(TokenManagement.getStrategy());                              // Initializes and gets the JWT strategy.
+
+    /*
+    // DenyAll Policy: Denies access to protected paths, unless its on the "whiteList".
+    this.app.use((req, res, next) => {
+      const reply = new RM();
+      passport.authenticate('jwt', (err, user, info) => {
+        if ((err || !user) && !whitelist.find(url => req.url.startsWith(url))) {
+          reply.addError('User unauthorized.');
+          return res.status(401).end(JSON.stringify(reply));
+        }
+        next();
+      })(req, res, next);
+    });
+
+    // token interceptor. Sends a renewed token on each petition if user is logged in.
+    this.app.use(async (req, res, next) => {
+      const reply = new RM();
+      if (req.get('authorization')) {
+        const newToken = await TokenManagement.renovarToken(
+          req.get('authorization'),
+        ).catch((err) => {
+          reply.addError(err);
+          res.status(401).json(reply);
+          next();
+        });
+        res.setHeader('Authorization', newToken as string);
+      }
+      res.setHeader('access-control-expose-headers', 'Authorization');
+      next();
+    });*/
 
     // Routers
     this.app.use('/api/v1/users', userRouter);

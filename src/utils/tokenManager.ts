@@ -26,15 +26,18 @@ export class TokenManagement {
     this._currentUser = value;
   }
 
-  public static async syncUser(id) {
+  public static async syncUser(id: number) {
     this.currentUser = await userController
       .getUser(id)
-      .catch(err => console.error(err));
-    if (this.currentUser.error) console.error('Error Syncing user with API at TokenManager');
+      .catch((err) => {
+        console.error('Error Syncing user with API at TokenManager');
+        console.error(err);
+        throw err;
+      });
     this.currentUser = this.currentUser.data;
   }
 
-  public static generateToken(userId) {
+  public static generateToken(userId: number) {
     this.token = jwt.sign(
       { data: userId },
       JWTSECRET,
