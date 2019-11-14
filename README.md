@@ -11,10 +11,11 @@
 - `npm run tslint`.
 
 ## Extra things:
-- JWT Implemented. 
-- TYPEORM.
+- A JWT manager, ready to use!. 
+- TYPEORM as the main connector with any of your databases.
 - Express status Implemented.
-- File Manger Implemented.
-- Postgres Implemented. 
-- Docker Implemented. 
-- User models and controller Implemented. 
+- A tiny file manager, also ready to use.
+- Docker (docker compose for local development, and dockerfile for delopying). 
+- User models and controller Implemented.
+- Morgan logger :D.
+- Nice errors handling!
