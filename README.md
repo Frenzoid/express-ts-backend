@@ -1,12 +1,14 @@
 # An express backend template with a few extra things.
 
 ## Requirements
-- Globally installed `nodemon`, `concurrently` and `tsc`.
+- Globally installed `nodemon`, `concurrently` and `typescript`.
 
 ## How to launch.
 - Dev: `npm run dev`.
 - Prod: `npm run prod`
-- pm2: `npm run pm2start`
+
+## How to check lints manually.
+- `npm run tslint`.
 
 ## Extra things:
 - JWT Implemented. 
