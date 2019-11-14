@@ -18,4 +18,5 @@
 - Docker (docker compose for local development, and dockerfile for delopying). 
 - User models and controller Implemented.
 - Morgan logger :D.
+- AirBnB Linting, no more unstandard structuring!
 - Nice errors handling!
