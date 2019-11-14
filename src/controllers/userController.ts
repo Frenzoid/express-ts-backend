@@ -1,4 +1,3 @@
-import { response as rp } from '../config/response';
 import { User } from '../models/user';
 import { Request } from 'express';
 import { DbConnector } from '../config/dbcon';
@@ -6,27 +5,19 @@ import { DbConnector } from '../config/dbcon';
 class UserController {
   // Get all Users
   public async getUsers() {
-
-    const users = await DbConnector.connection.manager.find(User).catch((err) => { throw err; });
-    rp.data = users;
-    return rp.export();
-
+    return await DbConnector.connection.manager.find(User).catch((err) => { throw err; });
   }
 
   // Get an User
   public async getUser(req: Request) {
     const searchOptions = { IdUser: req.params.id };
-    const user: User[] = await DbConnector.connection.manager.find(User, searchOptions).catch((err) => { throw err; });
-    rp.data = user;
-    return rp.export();
+    return await DbConnector.connection.manager.find(User, searchOptions).catch((err) => { throw err; });
   }
 
   // Create a new user.
   public async postUser(req: Request) {
     const user: User = new User(req.body.user);
-    rp.data = await DbConnector.connection.manager.save(user).catch((err) => { throw err; });
-
-    return rp.export();
+    return await DbConnector.connection.manager.save(user).catch((err) => { throw err; });
   }
 
   // Edit an user.
@@ -36,8 +27,7 @@ class UserController {
 
     user.update(req.body.user);
 
-    rp.data = await DbConnector.connection.manager.save(user).catch((err) => { throw err; });
-    return rp.export();
+    return await DbConnector.connection.manager.save(user).catch((err) => { throw err; });
   }
 
   // Suspend user.
@@ -47,8 +37,7 @@ class UserController {
 
     user.suspend();
 
-    rp.data = await DbConnector.connection.manager.save(user).catch((err) => { throw err; });
-    return rp.export();
+    return await DbConnector.connection.manager.save(user).catch((err) => { throw err; });
   }
 }
 

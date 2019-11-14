@@ -18,62 +18,53 @@ class UsersRouter {
     }
     getAllUsers(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                res.json(yield userController_1.userController.getUsers());
-            }
-            catch (err) {
-                console.log(err);
-                response_1.response.errors.push(err);
-                return response_1.response.export();
-            }
+            const reply = new response_1.ResponseModel();
+            reply.data = yield userController_1.userController.getUsers().catch((err) => {
+                reply.addError(err.message);
+                console.log(err.message);
+            });
+            return res.json(reply);
         });
     }
     postUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                res.json(yield userController_1.userController.postUser(req));
-            }
-            catch (err) {
-                console.log(err);
-                response_1.response.errors.push(err);
-                return response_1.response.export();
-            }
+            const reply = new response_1.ResponseModel();
+            reply.data = yield userController_1.userController.postUser(req).catch((err) => {
+                reply.addError(err.message);
+                console.log(err.message);
+            });
+            return res.json(reply);
         });
     }
     putUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                res.json(yield userController_1.userController.putUser(req));
-            }
-            catch (err) {
-                console.log(err);
-                response_1.response.errors.push(err);
-                return response_1.response.export();
-            }
+            const reply = new response_1.ResponseModel();
+            reply.data = yield yield userController_1.userController.putUser(req).catch((err) => {
+                reply.addError(err.message);
+                console.log(err.message);
+            });
+            return res.json(reply);
         });
     }
     getUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                res.json(yield userController_1.userController.getUser(req));
-            }
-            catch (err) {
-                console.log(err);
-                response_1.response.errors.push(err);
-                return response_1.response.export();
-            }
+            const reply = new response_1.ResponseModel();
+            reply.data = yield userController_1.userController.getUser(req).catch((err) => {
+                reply.addError(err.message);
+                console.log(err.message);
+            });
+            return res.json(reply);
         });
     }
     delUSer(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                res.json(yield userController_1.userController.delUser(req));
-            }
-            catch (err) {
-                console.log(err);
-                response_1.response.errors.push(err);
-                return response_1.response.export();
-            }
+            const reply = new response_1.ResponseModel();
+            reply.data = yield userController_1.userController.delUser(req).catch((err) => {
+                reply.errors.messages.push(err.message);
+                reply.errors.critical = true;
+                console.log(err.message);
+            });
+            return res.json(reply);
         });
     }
     init() {
