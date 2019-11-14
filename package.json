@@ -1,7 +1,7 @@
 {
   "name": "express-typescript-docker-jwt-typeorm-template",
-  "version": "2.3.0",
-  "description": "An express template with jwt and sequelize, in typescript",
+  "version": "2.8.0",
+  "description": "An express template with jwt and typeorm, in typescript",
   "author": {
     "name": "Frenzoid",
     "email": "frenzoid@protonmail.com"
@@ -22,7 +22,6 @@
     "@types/express-fileupload": "^0.4.0",
     "@types/morgan": "^1.7.35",
     "@types/passport-jwt": "^3.0.1",
-    "@types/sequelize": "^4.27.33",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",

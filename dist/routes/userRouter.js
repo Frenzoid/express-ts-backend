@@ -16,67 +16,83 @@ class UsersRouter {
         this.router = express_1.Router();
         this.init();
     }
-    getAllUsers(req, res, next) {
+    // Theses methods handle process between the data process and the response.
+    // Get all active Users
+    getUsers(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const reply = new response_1.ResponseModel();
             reply.data = yield userController_1.userController.getUsers().catch((err) => {
                 reply.addError(err.message);
-                console.log(err.message);
             });
+            res.setHeader('Content-Type', 'application/json');
             return res.json(reply);
         });
     }
+    // Get all Users
+    getAllUsers(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const reply = new response_1.ResponseModel();
+            reply.data = yield userController_1.userController.getAllUsers().catch((err) => {
+                reply.addError(err.message);
+            });
+            res.setHeader('Content-Type', 'application/json');
+            return res.json(reply);
+        });
+    }
+    // Create a new user.
     postUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const reply = new response_1.ResponseModel();
             reply.data = yield userController_1.userController.postUser(req).catch((err) => {
                 reply.addError(err.message);
-                console.log(err.message);
             });
+            res.setHeader('Content-Type', 'application/json');
             return res.json(reply);
         });
     }
+    // Edit an user.
     putUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const reply = new response_1.ResponseModel();
             reply.data = yield yield userController_1.userController.putUser(req).catch((err) => {
                 reply.addError(err.message);
-                console.log(err.message);
             });
+            res.setHeader('Content-Type', 'application/json');
             return res.json(reply);
         });
     }
+    // Get an User
     getUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const reply = new response_1.ResponseModel();
             reply.data = yield userController_1.userController.getUser(req).catch((err) => {
                 reply.addError(err.message);
-                console.log(err.message);
             });
+            res.setHeader('Content-Type', 'application/json');
             return res.json(reply);
         });
     }
+    // Suspend user.
     delUSer(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const reply = new response_1.ResponseModel();
             reply.data = yield userController_1.userController.delUser(req).catch((err) => {
-                reply.errors.messages.push(err.message);
-                reply.errors.critical = true;
-                console.log(err.message);
+                reply.addError(err.message);
             });
+            res.setHeader('Content-Type', 'application/json');
             return res.json(reply);
         });
     }
     init() {
-        this.router.get('/', this.getAllUsers);
-        this.router.post('/', this.postUser);
+        this.router.get('/', this.getUsers);
+        this.router.get('/all', this.getAllUsers);
         this.router.get('/:id', this.getUser);
+        this.router.post('/', this.postUser);
         this.router.put('/:id', this.putUser);
         this.router.delete('/:id', this.delUSer);
     }
 }
 exports.UsersRouter = UsersRouter;
 const userRoutes = new UsersRouter();
-userRoutes.init();
 exports.default = userRoutes.router;
 //# sourceMappingURL=userRouter.js.map

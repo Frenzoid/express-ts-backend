@@ -15,7 +15,6 @@ let User = class User {
         if (userdata) {
             this.nickname = userdata.nickname;
             this.name = userdata.name;
-            this.deleted = false;
         }
     }
     update(userdata) {
@@ -29,21 +28,25 @@ let User = class User {
     }
 };
 __decorate([
-    typeorm_1.PrimaryColumn(),
-    __metadata("design:type", String)
+    typeorm_1.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
 ], User.prototype, "IdUser", void 0);
 __decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column('text'),
     __metadata("design:type", String)
 ], User.prototype, "nickname", void 0);
 __decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column('text'),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column('bool', { default: false }),
     __metadata("design:type", Boolean)
 ], User.prototype, "deleted", void 0);
+__decorate([
+    typeorm_1.CreateDateColumn({ type: 'timestamp' }),
+    __metadata("design:type", Number)
+], User.prototype, "createdAt", void 0);
 User = __decorate([
     typeorm_1.Entity(),
     __metadata("design:paramtypes", [Object])

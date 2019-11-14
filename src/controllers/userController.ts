@@ -3,8 +3,14 @@ import { Request } from 'express';
 import { DbConnector } from '../config/dbcon';
 
 class UserController {
-  // Get all Users
+  // Get all active Users
   public async getUsers() {
+    const searchOptions = { deleted: false };
+    return await DbConnector.connection.manager.find(User, searchOptions).catch((err) => { throw err; });
+  }
+
+  // Get all Users
+  public async getAllUsers() {
     return await DbConnector.connection.manager.find(User).catch((err) => { throw err; });
   }
 

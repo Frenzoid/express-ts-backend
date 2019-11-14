@@ -11,8 +11,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
 const dbcon_1 = require("../config/dbcon");
 class UserController {
-    // Get all Users
+    // Get all active Users
     getUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const searchOptions = { deleted: false };
+            return yield dbcon_1.DbConnector.connection.manager.find(user_1.User, searchOptions).catch((err) => { throw err; });
+        });
+    }
+    // Get all Users
+    getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield dbcon_1.DbConnector.connection.manager.find(user_1.User).catch((err) => { throw err; });
         });

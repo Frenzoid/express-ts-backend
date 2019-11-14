@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -6,7 +6,6 @@ export class User {
     if (userdata) {
       this.nickname = userdata.nickname;
       this.name = userdata.name;
-      this.deleted = false;
     }
   }
 
@@ -22,16 +21,19 @@ export class User {
     this.deleted = true;
   }
 
-  @PrimaryColumn()
-  IdUser: string;
+  @PrimaryGeneratedColumn()
+  IdUser: number;
 
-  @Column()
+  @Column('text')
   nickname: string;
 
-  @Column()
+  @Column('text')
   name: string;
 
-  @Column()
+  @Column('bool', { default: false })
   deleted: boolean;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: number;
 
 }

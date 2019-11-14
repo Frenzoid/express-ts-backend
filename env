@@ -1,10 +1,14 @@
-PORT=8001
-APPNAME="express template app"
+APPPORT=8001
+APPNAME="express typescript template app"
+
 LOGGERPATH="./log/access.log"
-DBPASSWORD=example
-DBNAME=db
-DBHOST=database
+
 DBUSER=postgres
+DBPASSWORD=example
+DBHOST=database
 DBPORT=5432
+DBNAME=db
+
 JWTSECRET=secreet
+
 TZ=Europe/Madrid
