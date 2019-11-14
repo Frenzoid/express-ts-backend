@@ -4,30 +4,30 @@ import { DbConnector } from '../config/dbcon';
 
 class UserController {
   // Get all active Users
-  public async getUsers() {
+  public async getUsers(): Promise<User[]> {
     const searchOptions = { deleted: false };
     return await DbConnector.connection.manager.find(User, searchOptions).catch((err) => { throw err; });
   }
 
   // Get all Users
-  public async getAllUsers() {
+  public async getAllUsers(): Promise<User[]> {
     return await DbConnector.connection.manager.find(User).catch((err) => { throw err; });
   }
 
   // Get an User
-  public async getUser(req: Request) {
-    const searchOptions = { IdUser: req.params.id };
-    return await DbConnector.connection.manager.find(User, searchOptions).catch((err) => { throw err; });
+  public async getUser(req: Request | number): Promise<User> {
+    const searchOptions = (typeof req === 'number') ? { IdUser: req } : { IdUser: req.params.id };
+    return await DbConnector.connection.manager.findOne(User, searchOptions).catch((err) => { throw err; });
   }
 
   // Create a new user.
-  public async postUser(req: Request) {
+  public async postUser(req: Request): Promise<User> {
     const user: User = new User(req.body.user);
     return await DbConnector.connection.manager.save(user).catch((err) => { throw err; });
   }
 
   // Edit an user.
-  public async putUser(req: Request) {
+  public async putUser(req: Request): Promise<User> {
     const searchOptions = { IdUser: req.params.id };
     const user: User = await DbConnector.connection.manager.findOne(User, searchOptions).catch((err) => { throw err; });
 
@@ -37,7 +37,7 @@ class UserController {
   }
 
   // Suspend user.
-  public async delUser(req: Request) {
+  public async delUser(req: Request): Promise<User> {
     const searchOptions = { IdUser: req.params.id };
     const user: User = await DbConnector.connection.manager.findOne(User, searchOptions).catch((err) => { throw err; });
 
