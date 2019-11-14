@@ -6,7 +6,7 @@ class UserController {
   // Get all active Users
   public async getUsers(): Promise<User[]> {
     const searchOptions = { deleted: false };
-    return await DbConnector.connection.manager.find(User, searchOptions);
+    return await DbConnector.connection.manager.find(User, searchOptions).catch((err) => { throw err; });
   }
 
   // Get all Users
