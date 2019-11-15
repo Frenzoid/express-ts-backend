@@ -10,7 +10,7 @@ export class UsersRouter {
     this.init();
   }
 
-  // Theses methods handle process between the data process and the response.
+  // Theses methods handle the process between the data process and the response.
 
   // Get all active Users
   public async getUsers(req: Request, res: Response, next: NextFunction): Promise<Response> {
