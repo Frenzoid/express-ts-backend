@@ -17,6 +17,7 @@ const express_fileupload = require("express-fileupload");
 const logger = require("morgan");
 const path = require("path");
 const passport = require("passport");
+const fs = require("fs");
 // Import configs.
 const dbcon_1 = require("./config/dbcon");
 const fileuploadOptions_1 = require("./config/fileuploadOptions");
@@ -24,6 +25,7 @@ const tokenManager_1 = require("./utils/tokenManager");
 const DbConnInsert_1 = require("./defaultData/DbConnInsert");
 // Imports the routers.
 const userRouter_1 = require("./routes/userRouter");
+const tagRouter_1 = require("./routes/tagRouter");
 class App {
     constructor() {
         this.app = express();
@@ -46,12 +48,13 @@ class App {
             // Initializating the libraries and the express config.
             this.app.use(cors()); // Allows Control Acess Protol to work outside of a localhost.
             this.app.use(compression()); // Compresses the requests.
-            this.app.use(logger('dev')); // Logs the activity to the console.
+            this.app.use(logger('common', { stream: fs.createWriteStream('./log/access.log', { flags: 'a' }) }));
+            this.app.use(logger('dev')); // Loggers, one to file (upper line) and another to console.
             this.app.use(bodyParser.json({ limit: '100mb' })); // Parses automaticallythe requests, and adds a limit.
             this.app.use(bodyParser.urlencoded({ extended: false, limit: '100mb' })); // Manages the encoded urls, and adds a limit.
             this.app.use(express_fileupload(fileuploadOptions_1.fileuploadOptions)); // Manages the file uploads and adds a limit.
             this.app.use('/api/v1/static', express.static(path.join(__dirname, '/public'))); // Exposes a static folder to the exterior.
-            this.app.use(favicon(`${__dirname}/public/coffe.png`));
+            this.app.use(favicon(`${__dirname}/public/coffe.png`)); // Adds a favicon (not necessary).
             passport.use(tokenManager_1.TokenManagement.getStrategy()); // Initializes and gets the JWT strategy.
             /*
             // DenyAll Policy: Denies access to protected paths, unless its on the "whiteList".
@@ -84,6 +87,7 @@ class App {
             });*/
             // Routers
             this.app.use('/api/v1/users', userRouter_1.default);
+            this.app.use('/api/v1/tags', tagRouter_1.default);
         });
     }
 }

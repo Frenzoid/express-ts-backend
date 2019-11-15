@@ -7,17 +7,19 @@ import * as express_fileupload from 'express-fileupload';
 import * as logger from 'morgan';
 import * as path from 'path';
 import * as passport from 'passport';
+import * as fs from 'fs';
 
 // Import configs.
 import { DbConnector } from './config/dbcon';
 import { fileuploadOptions } from './config/fileuploadOptions';
 import { TokenManagement } from './utils/tokenManager';
+import { DefTagsData } from './defaultData/DbConnInsert';
 import { whitelist } from './config/const';
 import { ResponseModel as RM } from './config/response';
-import { DefTagsData } from './defaultData/DbConnInsert';
 
 // Imports the routers.
 import userRouter from './routes/userRouter';
+import tagRouter from './routes/tagRouter';
 
 class App {
   public app: express.Application;
@@ -43,12 +45,13 @@ class App {
     // Initializating the libraries and the express config.
     this.app.use(cors());                                                     // Allows Control Acess Protol to work outside of a localhost.
     this.app.use(compression());                                              // Compresses the requests.
-    this.app.use(logger('dev'));                                              // Logs the activity to the console.
+    this.app.use(logger('common', { stream: fs.createWriteStream('./log/access.log', { flags: 'a' }) }));
+    this.app.use(logger('dev'));                                              // Loggers, one to file (upper line) and another to console.
     this.app.use(bodyParser.json({ limit: '100mb' }));                        // Parses automaticallythe requests, and adds a limit.
     this.app.use(bodyParser.urlencoded({ extended: false, limit: '100mb' })); // Manages the encoded urls, and adds a limit.
     this.app.use(express_fileupload(fileuploadOptions));                      // Manages the file uploads and adds a limit.
     this.app.use('/api/v1/static', express.static(path.join(__dirname, '/public'))); // Exposes a static folder to the exterior.
-    this.app.use(favicon(`${__dirname}/public/coffe.png`));
+    this.app.use(favicon(`${__dirname}/public/coffe.png`));                   // Adds a favicon (not necessary).
     passport.use(TokenManagement.getStrategy());                              // Initializes and gets the JWT strategy.
 
     /*
@@ -83,6 +86,7 @@ class App {
 
     // Routers
     this.app.use('/api/v1/users', userRouter);
+    this.app.use('/api/v1/tags', tagRouter);
   }
 }
 

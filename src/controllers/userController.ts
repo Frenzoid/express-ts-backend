@@ -2,7 +2,6 @@ import { User } from '../models/User';
 import { Tag } from '../models/Tag';
 import { Request } from 'express';
 import { DbConnector } from '../config/dbcon';
-import { isError } from 'util';
 
 class UserController {
   // Get all active Users
