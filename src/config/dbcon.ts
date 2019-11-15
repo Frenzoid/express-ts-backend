@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Connection, ConnectionManager, getConnectionManager } from 'typeorm';
-import { User } from '../models/user';
+import { User } from '../models/User';
+import { Tag } from '../models/Tag';
 
 export class DbConnector {
   public static dbName: string = process.env.DBNAME;
@@ -19,6 +20,7 @@ export class DbConnector {
     database: DbConnector.dbName,
     entities: [
       User,
+      Tag,
     ],
   });
 }

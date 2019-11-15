@@ -14,6 +14,7 @@ import { fileuploadOptions } from './config/fileuploadOptions';
 import { TokenManagement } from './utils/tokenManager';
 import { whitelist } from './config/const';
 import { ResponseModel as RM } from './config/response';
+import { DefTagsData } from './defaultData/DbConnInsert';
 
 // Imports the routers.
 import userRouter from './routes/userRouter';
@@ -30,7 +31,9 @@ class App {
     // Connect with the server
     DbConnector.connection.connect().then((result: any) => {
       if (result.isConnected) console.log('DB: Connection with database established!.');
-      DbConnector.connection.synchronize(true).catch((err: string) => {
+      DbConnector.connection.synchronize(true).then(() => {
+        DefTagsData();                                                        // Insert default data.
+      }).catch((err: string) => {
         console.error(`but interaction with the db failed. Error: ${err}`);
       });                                                                     // Force tables to recreate (clear out) on load.
     }).catch((err: string) => {

@@ -1,11 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Tag } from './Tag';
+import { DbConnector } from '../config/dbcon';
 
 @Entity()
 export class User {
-  constructor(userdata) {
+  constructor(userdata: User) {
     if (userdata) {
       this.nickname = userdata.nickname;
       this.name = userdata.name;
+      this.tags = [];
     }
   }
 
@@ -22,7 +25,7 @@ export class User {
   }
 
   @PrimaryGeneratedColumn()
-  IdUser: number;
+  id: number;
 
   @Column('text')
   nickname: string;
@@ -36,4 +39,7 @@ export class User {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: number;
 
+  @ManyToMany(type => Tag, tag => tag.users)
+  @JoinTable()
+  tags: Tag[];
 }

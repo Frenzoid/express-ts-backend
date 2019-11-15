@@ -39,6 +39,17 @@ class UsersRouter {
             return res.json(reply);
         });
     }
+    // Get users with X tags.
+    getUsersWithTags(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const reply = new response_1.ResponseModel();
+            reply.data = yield userController_1.userController.getUsersWithTags(req).catch((err) => {
+                reply.addError(err.message);
+            });
+            res.setHeader('Content-Type', 'application/json');
+            return res.json(reply);
+        });
+    }
     // Create a new user.
     postUser(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -85,6 +96,7 @@ class UsersRouter {
     }
     init() {
         this.router.get('/', this.getUsers);
+        this.router.get('/tags', this.getUsersWithTags);
         this.router.get('/all', this.getAllUsers);
         this.router.get('/:id', this.getUser);
         this.router.post('/', this.postUser);

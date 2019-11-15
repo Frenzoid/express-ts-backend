@@ -21,6 +21,7 @@ const passport = require("passport");
 const dbcon_1 = require("./config/dbcon");
 const fileuploadOptions_1 = require("./config/fileuploadOptions");
 const tokenManager_1 = require("./utils/tokenManager");
+const DbConnInsert_1 = require("./defaultData/DbConnInsert");
 // Imports the routers.
 const userRouter_1 = require("./routes/userRouter");
 class App {
@@ -34,7 +35,9 @@ class App {
             dbcon_1.DbConnector.connection.connect().then((result) => {
                 if (result.isConnected)
                     console.log('DB: Connection with database established!.');
-                dbcon_1.DbConnector.connection.synchronize(true).catch((err) => {
+                dbcon_1.DbConnector.connection.synchronize(true).then(() => {
+                    DbConnInsert_1.DefTagsData(); // Insert default data.
+                }).catch((err) => {
                     console.error(`but interaction with the db failed. Error: ${err}`);
                 }); // Force tables to recreate (clear out) on load.
             }).catch((err) => {

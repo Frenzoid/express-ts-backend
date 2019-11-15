@@ -10,11 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
+const Tag_1 = require("./Tag");
 let User = class User {
     constructor(userdata) {
         if (userdata) {
             this.nickname = userdata.nickname;
             this.name = userdata.name;
+            this.tags = [];
         }
     }
     update(userdata) {
@@ -30,7 +32,7 @@ let User = class User {
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], User.prototype, "IdUser", void 0);
+], User.prototype, "id", void 0);
 __decorate([
     typeorm_1.Column('text'),
     __metadata("design:type", String)
@@ -47,9 +49,14 @@ __decorate([
     typeorm_1.CreateDateColumn({ type: 'timestamp' }),
     __metadata("design:type", Number)
 ], User.prototype, "createdAt", void 0);
+__decorate([
+    typeorm_1.ManyToMany(type => Tag_1.Tag, tag => tag.users),
+    typeorm_1.JoinTable(),
+    __metadata("design:type", Array)
+], User.prototype, "tags", void 0);
 User = __decorate([
     typeorm_1.Entity(),
-    __metadata("design:paramtypes", [Object])
+    __metadata("design:paramtypes", [User])
 ], User);
 exports.User = User;
-//# sourceMappingURL=user.js.map
+//# sourceMappingURL=User.js.map

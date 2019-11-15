@@ -36,6 +36,18 @@ export class UsersRouter {
     return res.json(reply);
   }
 
+  // Get users with X tags.
+  public async getUsersWithTags(req: Request, res: Response, next: NextFunction): Promise<Response> {
+    const reply = new RM();
+
+    reply.data = await userController.getUsersWithTags(req).catch((err) => {
+      reply.addError(err.message);
+    });
+
+    res.setHeader('Content-Type', 'application/json');
+    return res.json(reply);
+  }
+
   // Create a new user.
   public async postUser(req: Request, res: Response, next: NextFunction): Promise<Response>  {
     const reply = new RM();
@@ -86,6 +98,7 @@ export class UsersRouter {
 
   public init() {
     this.router.get('/', this.getUsers);
+    this.router.get('/tags', this.getUsersWithTags);
     this.router.get('/all', this.getAllUsers);
     this.router.get('/:id', this.getUser);
     this.router.post('/', this.postUser);

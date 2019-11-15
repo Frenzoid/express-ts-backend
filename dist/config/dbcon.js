@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const typeorm_1 = require("typeorm");
-const user_1 = require("../models/user");
+const User_1 = require("../models/User");
+const Tag_1 = require("../models/Tag");
 class DbConnector {
 }
 DbConnector.dbName = process.env.DBNAME;
@@ -19,7 +20,8 @@ DbConnector.connection = DbConnector.connectionManager.create({
     password: DbConnector.dbPass,
     database: DbConnector.dbName,
     entities: [
-        user_1.User,
+        User_1.User,
+        Tag_1.Tag,
     ],
 });
 exports.DbConnector = DbConnector;
