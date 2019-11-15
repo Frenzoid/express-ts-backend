@@ -29,7 +29,7 @@ class UserController {
       const tag = await DbConnector.connection.manager.findOne(Tag, { relations: dRelations, where: searchOptions }).catch((err) => { throw err; });
       if (tag) taggedUsers.push(...tag.users);
     }
-    return taggedUsers.filter((set => (f: { id: unknown; }) => !set.has(f.id) && set.add(f.id))(new Set()));
+    return taggedUsers.filter((set => (f: { id: number; }) => !set.has(f.id) && set.add(f.id))(new Set()));
   }
 
   // Get an User
