@@ -4,6 +4,7 @@ require("reflect-metadata");
 const typeorm_1 = require("typeorm");
 const User_1 = require("../models/User");
 const Tag_1 = require("../models/Tag");
+const UploadedFile_1 = require("../models/UploadedFile");
 class DbConnector {
 }
 DbConnector.dbName = process.env.DBNAME;
@@ -22,6 +23,7 @@ DbConnector.connection = DbConnector.connectionManager.create({
     entities: [
         User_1.User,
         Tag_1.Tag,
+        UploadedFile_1.UploadedFile,
     ],
 });
 exports.DbConnector = DbConnector;

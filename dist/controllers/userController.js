@@ -10,7 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = require("../models/User");
 const Tag_1 = require("../models/Tag");
+const UploadedFile_1 = require("../models/UploadedFile");
 const dbcon_1 = require("../config/dbcon");
+const const_1 = require("../config/const");
+const ExpressFileUploadManager_1 = require("../utils/ExpressFileUploadManager");
+const md5 = require("md5");
+const Base64ImadeUploadManager_1 = require("../utils/Base64ImadeUploadManager");
 class UserController {
     // Get all active Users
     getUsers() {
@@ -55,13 +60,46 @@ class UserController {
     postUser(req) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = new User_1.User(req.body.user);
-            if (Array.isArray(req.body.user.tags) && req.body.user.tags.length > 0) {
-                const tagslen = req.body.user.tags.length;
+            const usrBody = req.body.user;
+            // Checks if there is any tag, and adds it.
+            if (Array.isArray(usrBody.tags) && usrBody.tags.length > 0) {
+                const tagslen = usrBody.tags.length;
                 for (let i = 0; i < tagslen; i = i + 1) {
-                    const tag = yield dbcon_1.DbConnector.connection.manager.findOne(Tag_1.Tag, { name: req.body.user.tags[i] }).catch((err) => { throw err; });
+                    const currentTag = usrBody.tags[i].toUpperCase();
+                    const tag = yield dbcon_1.DbConnector.connection.manager.findOne(Tag_1.Tag, { name: currentTag }).catch((err) => { throw err; });
                     if (tag)
                         user.tags.push(tag);
                 }
+            }
+            // Checks if theres any EXPRESS FILE (FORM FILE) for the avatar image, and uploads it.
+            const expressFile = (req.files && req.files.avatar);
+            if (expressFile && ExpressFileUploadManager_1.ExpressFileUploadManager.checkMimetype(expressFile, 'image/')) {
+                const randomStr = md5(Date.now());
+                const ext = ExpressFileUploadManager_1.ExpressFileUploadManager.getExtension(expressFile);
+                const userMediaPath = `${const_1.USERAVATARPUBLIC}`;
+                const newName = `${randomStr}.${ext}`;
+                yield ExpressFileUploadManager_1.ExpressFileUploadManager.manageFile(expressFile, userMediaPath, newName)
+                    .then((newNameSaved) => __awaiter(this, void 0, void 0, function* () {
+                    const size = ExpressFileUploadManager_1.ExpressFileUploadManager.getSize(expressFile);
+                    const filePacket = { ext, size, path: `${const_1.USERAVATARSTATIC}${newNameSaved}` };
+                    const unsavedAvatar = new UploadedFile_1.UploadedFile(filePacket);
+                    const savedAvatar = yield dbcon_1.DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });
+                    user.avatar = savedAvatar;
+                })).catch((err) => { throw err; });
+            }
+            else {
+                user.avatar = yield dbcon_1.DbConnector.connection.manager.findOne(UploadedFile_1.UploadedFile, { where: { id: 1 } }).catch((err) => { throw err; });
+            }
+            // Checks if theres any BASE 64 FILE for the avatar image, and uploads it.
+            if (usrBody && usrBody.B64avatar) {
+                const userMediaPath = `${const_1.USERAVATARPUBLIC}`;
+                const ext = Base64ImadeUploadManager_1.B64UploadManager.getExtension(usrBody.B64avatar);
+                const size = Base64ImadeUploadManager_1.B64UploadManager.getSize(usrBody.B64avatar);
+                const imageFileName = yield Base64ImadeUploadManager_1.B64UploadManager.manageFile(usrBody.B64avatar, userMediaPath);
+                const filePacket = { ext, size, path: `${const_1.USERAVATARSTATIC}${imageFileName}` };
+                const unsavedAvatar = new UploadedFile_1.UploadedFile(filePacket);
+                const savedAvatar = yield dbcon_1.DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });
+                user.avatar = savedAvatar;
             }
             return yield dbcon_1.DbConnector.connection.manager.save(user).catch((err) => { throw err; });
         });
@@ -77,16 +115,47 @@ class UserController {
             if (!user)
                 throw new Error(`user with id ${searchOptions.id} not found.`);
             user.update(req.body.user);
-            // Updates tags array.
+            // Updates tags.
             if (Array.isArray(usrBody.tags) && usrBody.tags.length > 0) {
                 const tagslen = usrBody.tags.length;
                 const newTags = [];
                 for (let i = 0; i < tagslen; i = i + 1) {
-                    const tag = yield dbcon_1.DbConnector.connection.manager.findOne(Tag_1.Tag, { name: usrBody.tags[i] }).catch((err) => { throw err; });
+                    const currentTag = usrBody.tags[i].toUpperCase();
+                    const tag = yield dbcon_1.DbConnector.connection.manager.findOne(Tag_1.Tag, { name: currentTag }).catch((err) => { throw err; });
                     if (tag)
                         newTags.push(tag);
                 }
                 user.tags = newTags;
+            }
+            // Checks if theres any EXPRESS FILE (FORM FILE) for the avatar image, and uploads it.
+            const expressFile = (req.files && req.files.avatar);
+            if (expressFile && ExpressFileUploadManager_1.ExpressFileUploadManager.checkMimetype(expressFile, 'image/')) {
+                const randomStr = md5(Date.now());
+                const ext = ExpressFileUploadManager_1.ExpressFileUploadManager.getExtension(expressFile);
+                const userMediaPath = `${const_1.USERAVATARPUBLIC}`;
+                const newName = `${randomStr}.${ext}`;
+                yield ExpressFileUploadManager_1.ExpressFileUploadManager.manageFile(expressFile, userMediaPath, newName)
+                    .then((newNameSaved) => __awaiter(this, void 0, void 0, function* () {
+                    const size = ExpressFileUploadManager_1.ExpressFileUploadManager.getSize(expressFile);
+                    const filePacket = { ext, size, path: `${const_1.USERAVATARSTATIC}${newNameSaved}` };
+                    const unsavedAvatar = new UploadedFile_1.UploadedFile(filePacket);
+                    const savedAvatar = yield dbcon_1.DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });
+                    user.avatar = savedAvatar;
+                })).catch((err) => { throw err; });
+            }
+            else {
+                user.avatar = yield dbcon_1.DbConnector.connection.manager.findOne(UploadedFile_1.UploadedFile, { where: { id: 1 } }).catch((err) => { throw err; });
+            }
+            // Checks if theres any BASE 64 FILE for the avatar image, and uploads it.
+            if (usrBody && usrBody.B64avatar) {
+                const userMediaPath = `${const_1.USERAVATARPUBLIC}`;
+                const ext = Base64ImadeUploadManager_1.B64UploadManager.getExtension(usrBody.B64avatar);
+                const size = Base64ImadeUploadManager_1.B64UploadManager.getSize(usrBody.B64avatar);
+                const imageFileName = yield Base64ImadeUploadManager_1.B64UploadManager.manageFile(usrBody.B64avatar, userMediaPath);
+                const filePacket = { ext, size, path: `${const_1.USERAVATARSTATIC}${imageFileName}` };
+                const unsavedAvatar = new UploadedFile_1.UploadedFile(filePacket);
+                const savedAvatar = yield dbcon_1.DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });
+                user.avatar = savedAvatar;
             }
             return yield dbcon_1.DbConnector.connection.manager.save(user).catch((err) => { throw err; });
         });

@@ -4,6 +4,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 ENV APPPORT=8001
+ENV APPAPIURL=http://localhost
 ENV APPNAME="express template app"
 
 ENV LOGGERPATH="./log/access.log"

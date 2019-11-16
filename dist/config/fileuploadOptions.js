@@ -5,6 +5,6 @@ exports.fileuploadOptions = {
     abortOnLimit: true,
     preserveExtension: true,
     useTempFiles: true,
-    tempFileDir: './tmp/',
+    tempFileDir: '\\tmp\\',
 };
 //# sourceMappingURL=fileuploadOptions.js.map

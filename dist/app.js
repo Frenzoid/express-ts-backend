@@ -38,7 +38,8 @@ class App {
                 if (result.isConnected)
                     console.log('DB: Connection with database established!.');
                 dbcon_1.DbConnector.connection.synchronize(true).then(() => {
-                    DbConnInsert_1.DefTagsData(); // Insert default data.
+                    DbConnInsert_1.DefTagsData(); // Insert default tags.
+                    DbConnInsert_1.DefAvatarData(); // Insert default avatar.
                 }).catch((err) => {
                     console.error(`but interaction with the db failed. Error: ${err}`);
                 }); // Force tables to recreate (clear out) on load.

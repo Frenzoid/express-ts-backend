@@ -16,7 +16,7 @@ class TagsRouter {
         this.router = express_1.Router();
         this.init();
     }
-    // Theses methods handle process between the data process and the response.
+    // Theses methods handle the process between the data process and the response.
     // Get all tags
     getTags(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {

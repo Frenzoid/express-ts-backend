@@ -1,7 +1,8 @@
 import { UploadedFile } from 'express-fileupload';
 import * as mkdir from 'mkdirp';
+import { USERAVATARSTATIC } from '../config/const';
 
-export class FileManager {
+export class ExpressFileUploadManager {
 
   public static getExtension(expressFile: UploadedFile){
     return `.${expressFile.name.split('.')[1]}`;
@@ -36,9 +37,7 @@ export class FileManager {
             reject(`Error moving file: ${errMoving}`);
           }
 
-          const serverPath = completePath.split('public')[1];
-
-          resolve(serverPath);
+          resolve(newName);
         });
       });
     });

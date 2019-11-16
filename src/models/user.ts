@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable, OneToOne } from 'typeorm';
 import { Tag } from './Tag';
-import { DbConnector } from '../config/dbcon';
+import { UploadedFile } from './UploadedFile';
 
 @Entity()
 export class User {
@@ -12,7 +12,8 @@ export class User {
     }
   }
 
-  update(userdata) {
+  // Updates static data.
+  update(userdata: User) {
     if (userdata.nickname)
       this.nickname = userdata.nickname;
 
@@ -42,4 +43,7 @@ export class User {
   @ManyToMany(type => Tag, tag => tag.users)
   @JoinTable()
   tags: Tag[];
+
+  @JoinTable()
+  avatar: UploadedFile;
 }

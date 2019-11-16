@@ -13,7 +13,7 @@ import * as fs from 'fs';
 import { DbConnector } from './config/dbcon';
 import { fileuploadOptions } from './config/fileuploadOptions';
 import { TokenManagement } from './utils/tokenManager';
-import { DefTagsData } from './defaultData/DbConnInsert';
+import { DefTagsData, DefAvatarData } from './defaultData/DbConnInsert';
 import { whitelist } from './config/const';
 import { ResponseModel as RM } from './config/response';
 
@@ -34,7 +34,8 @@ class App {
     DbConnector.connection.connect().then((result: any) => {
       if (result.isConnected) console.log('DB: Connection with database established!.');
       DbConnector.connection.synchronize(true).then(() => {
-        DefTagsData();                                                        // Insert default data.
+        DefTagsData();                                                        // Insert default tags.
+        DefAvatarData();                                                      // Insert default avatar.
       }).catch((err: string) => {
         console.error(`but interaction with the db failed. Error: ${err}`);
       });                                                                     // Force tables to recreate (clear out) on load.

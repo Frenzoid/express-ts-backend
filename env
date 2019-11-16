@@ -1,4 +1,5 @@
 APPPORT=8001
+APPAPIURL=http://localhost
 APPNAME="express typescript template app"
 
 LOGGERPATH="./log/access.log"
