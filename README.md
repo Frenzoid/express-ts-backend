@@ -1,5 +1,5 @@
 # An express backend template with a few extra things.
-
+![alt text](https://github.com/Frenzoid/express-typescript/blob/master/assets/expressts.png)
 ## Requirements
 - Globally installed `nodemon`, `concurrently` and `typescript`.
 
