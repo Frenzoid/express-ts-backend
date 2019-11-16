@@ -6,8 +6,8 @@ LOGGERPATH="./log/access.log"
 
 DBUSER=postgres
 DBPASSWORD=example
-DBHOST=144.91.95.0
-DBPORT=32775
+DBHOST=database
+DBPORT=5432
 DBNAME=db
 
 JWTSECRET=secreet
