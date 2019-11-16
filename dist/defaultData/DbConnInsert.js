@@ -15,7 +15,7 @@ exports.DefTagsData = () => {
     dbcon_1.DbConnector.connection.manager.save(new Tag_1.Tag('COLD')).catch((err) => { throw err; });
 };
 exports.DefAvatarData = () => {
-    const defaultAvatarData = { size: '23.2KBs', ext: 'png', path: `${const_1.USERAVATARSTATIC}default.png` };
+    const defaultAvatarData = { size: '23.2KBs', ext: 'png', externalPath: `${const_1.USERAVATARSTATIC}default.png`, internalPath: `${const_1.USERAVATARPUBLIC}default.png` };
     const defaultAvatar = new UploadedFile_1.UploadedFile(defaultAvatarData);
     dbcon_1.DbConnector.connection.manager.save(defaultAvatar).catch((err) => { throw err; });
 };

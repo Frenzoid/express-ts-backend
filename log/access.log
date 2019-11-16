@@ -280,3 +280,4 @@ Sat, 05 Jan 2019 23:13:55 GMT GET /status 304 - - 14.292 ms
 ::1 - - [16/Nov/2019:22:37:56 +0000] "PUT /api/v1/users/1 HTTP/1.1" 200 409
 ::1 - - [16/Nov/2019:22:37:58 +0000] "GET /api/v1/static/media/users/934af04867875702905aed13252ed0a8.jpeg HTTP/1.1" 200 829836
 ::1 - - [16/Nov/2019:22:40:20 +0000] "POST /api/v1/users HTTP/1.1" 200 413
+::1 - - [16/Nov/2019:22:51:04 +0000] "POST /api/v1/users HTTP/1.1" 200 541

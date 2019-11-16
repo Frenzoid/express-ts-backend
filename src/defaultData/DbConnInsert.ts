@@ -1,7 +1,7 @@
 import { Tag } from '../models/Tag';
 import { DbConnector } from '../config/dbcon';
 import { UploadedFile } from '../models/UploadedFile';
-import { USERAVATARSTATIC } from '../config/const';
+import { USERAVATARSTATIC, USERAVATARPUBLIC } from '../config/const';
 
 // Example on how to insert default data into db.
 export const DefTagsData = () => {
@@ -15,7 +15,7 @@ export const DefTagsData = () => {
 };
 
 export const DefAvatarData = () => {
-  const defaultAvatarData: any = { size: '23.2KBs', ext: 'png', path: `${USERAVATARSTATIC}default.png` };
+  const defaultAvatarData: any = { size: '23.2KBs', ext: 'png', externalPath: `${USERAVATARSTATIC}default.png`, internalPath: `${USERAVATARPUBLIC}default.png` };
   const defaultAvatar = new UploadedFile(defaultAvatarData);
   DbConnector.connection.manager.save(defaultAvatar).catch((err) => { throw err; });
 }

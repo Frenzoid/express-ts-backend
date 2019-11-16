@@ -72,7 +72,7 @@ class UserController {
       await EFUM.manageFile(expressFile, userMediaPath, newName)
       .then(async (newNameSaved: string) => {
         const size = EFUM.getSize(expressFile);
-        const filePacket: any = { ext, size, path: `${USERAVATARSTATIC}${newNameSaved}` };
+        const filePacket: any = { ext, size, externalPath: `${USERAVATARSTATIC}${newNameSaved}`, internalPath: `${USERAVATARPUBLIC}${newNameSaved}` };
 
         const unsavedAvatar = new UpFileModel(filePacket);
         const savedAvatar = await DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });
@@ -88,7 +88,7 @@ class UserController {
       const size: string = B64UploadManager.getSize(usrBody.B64avatar);
 
       const imageFileName = await B64UploadManager.manageFile(usrBody.B64avatar, userMediaPath);
-      const filePacket: any = { ext, size, path: `${USERAVATARSTATIC}${imageFileName}` };
+      const filePacket: any = { ext, size, externalPath: `${USERAVATARSTATIC}${imageFileName}`, internalPath: `${USERAVATARPUBLIC}${imageFileName}` };
 
       const unsavedAvatar = new UpFileModel(filePacket);
       const savedAvatar = await DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });

@@ -12,15 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 let UploadedFile = class UploadedFile {
     constructor(upfile) {
-        if (upfile && typeof upfile !== 'string') {
-            this.path = upfile.path;
+        if (upfile) {
+            this.externalPath = upfile.externalPath;
+            this.internalPath = upfile.internalPath;
             if (upfile.ext)
                 this.ext = upfile.ext;
             if (upfile.size)
                 this.size = upfile.size;
-        }
-        else {
-            this.path = upfile;
         }
     }
 };
@@ -31,7 +29,11 @@ __decorate([
 __decorate([
     typeorm_1.Column('text'),
     __metadata("design:type", String)
-], UploadedFile.prototype, "path", void 0);
+], UploadedFile.prototype, "externalPath", void 0);
+__decorate([
+    typeorm_1.Column('text'),
+    __metadata("design:type", String)
+], UploadedFile.prototype, "internalPath", void 0);
 __decorate([
     typeorm_1.Column('text', { default: 'unknown' }),
     __metadata("design:type", String)
@@ -46,7 +48,7 @@ __decorate([
 ], UploadedFile.prototype, "createdAt", void 0);
 UploadedFile = __decorate([
     typeorm_1.Entity(),
-    __metadata("design:paramtypes", [Object])
+    __metadata("design:paramtypes", [UploadedFile])
 ], UploadedFile);
 exports.UploadedFile = UploadedFile;
 //# sourceMappingURL=UploadedFile.js.map

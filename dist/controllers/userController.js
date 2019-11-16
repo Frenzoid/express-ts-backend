@@ -81,7 +81,7 @@ class UserController {
                 yield ExpressFileUploadManager_1.ExpressFileUploadManager.manageFile(expressFile, userMediaPath, newName)
                     .then((newNameSaved) => __awaiter(this, void 0, void 0, function* () {
                     const size = ExpressFileUploadManager_1.ExpressFileUploadManager.getSize(expressFile);
-                    const filePacket = { ext, size, path: `${const_1.USERAVATARSTATIC}${newNameSaved}` };
+                    const filePacket = { ext, size, externalPath: `${const_1.USERAVATARSTATIC}${newNameSaved}`, internalPath: `${const_1.USERAVATARPUBLIC}${newNameSaved}` };
                     const unsavedAvatar = new UploadedFile_1.UploadedFile(filePacket);
                     const savedAvatar = yield dbcon_1.DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });
                     user.avatar = savedAvatar;
@@ -96,7 +96,7 @@ class UserController {
                 const ext = Base64ImadeUploadManager_1.B64UploadManager.getExtension(usrBody.B64avatar);
                 const size = Base64ImadeUploadManager_1.B64UploadManager.getSize(usrBody.B64avatar);
                 const imageFileName = yield Base64ImadeUploadManager_1.B64UploadManager.manageFile(usrBody.B64avatar, userMediaPath);
-                const filePacket = { ext, size, path: `${const_1.USERAVATARSTATIC}${imageFileName}` };
+                const filePacket = { ext, size, externalPath: `${const_1.USERAVATARSTATIC}${imageFileName}`, internalPath: `${const_1.USERAVATARPUBLIC}${imageFileName}` };
                 const unsavedAvatar = new UploadedFile_1.UploadedFile(filePacket);
                 const savedAvatar = yield dbcon_1.DbConnector.connection.manager.save(unsavedAvatar).catch((err) => { throw err; });
                 user.avatar = savedAvatar;

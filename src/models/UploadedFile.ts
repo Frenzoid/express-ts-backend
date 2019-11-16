@@ -2,19 +2,23 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeor
 
 @Entity()
 export class UploadedFile {
-  constructor(upfile: UploadedFile | string) {
-    if (upfile && typeof upfile !== 'string') {
-      this.path = upfile.path;
+  constructor(upfile: UploadedFile) {
+    if (upfile) {
+      this.externalPath = upfile.externalPath;
+      this.internalPath = upfile.internalPath;
       if (upfile.ext) this.ext = upfile.ext;
       if (upfile.size)  this.size = upfile.size;
-    } else { this.path = upfile as string; }
+    }
   }
 
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column('text')
-  path: string;
+  externalPath: string;
+
+  @Column('text')
+  internalPath: string;
 
   @Column('text', { default: 'unknown' })
   ext: string;
