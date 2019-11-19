@@ -20,6 +20,7 @@ ENV TZ=Europe/Madrid
 
 RUN npm install -g nodemon
 RUN npm install -g typescript
+RUN npm install -g concurrently
 
 COPY package.json /usr/src/app/
 

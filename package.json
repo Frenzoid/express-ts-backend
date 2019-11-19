@@ -22,7 +22,7 @@
     "@types/express-fileupload": "^0.4.0",
     "@types/morgan": "^1.7.35",
     "@types/passport-jwt": "^3.0.1",
-    "bcrypt-nodejs": "0.0.3",
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "concurrently": "^4.1.0",
