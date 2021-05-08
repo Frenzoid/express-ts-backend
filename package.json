@@ -44,7 +44,7 @@
     "request": "^2.88.0",
     "tslint": "^5.12.1",
     "tslint-config-airbnb": "^5.11.1",
-    "typeorm": "^0.2.20",
+    "typeorm": "^0.2.25",
     "typescript": "^3.2.2"
   },
   "devDependencies": {
